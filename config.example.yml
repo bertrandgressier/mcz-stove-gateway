@@ -1,0 +1,14 @@
+setup:
+  debug: false
+mqtt:
+  url: mqtt://192.168.1.1:1883
+  username: user
+  password: password
+  mqttTopicPath: MczStove
+
+ws:
+  url: http://app.mcz.it:9000
+
+stoves:
+  - serialNumber: 0000000000
+    macAddress: 0000000000
