@@ -1,0 +1,87 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title HA/MQTT MCZ Stove Integration
+remove @unlinked
+
+Person(user, "User", "A person using the system")
+
+ContainerQueue_Ext(mqtt, "MQTT Broker")
+
+System_Ext(mcz, "MCZ Stove") {
+    ContainerDb_Ext(mcz_websocket, "MCZ Websocket")
+    Container_Ext(mcz_app, "MCZ Mobile App")
+    BiRel(mcz_app, mcz_websocket, "Control", "Websocket")
+    Rel(user, mcz_app, "Control", "Mobile App")
+}
+
+System_Ext(ha, "Home Assistant") {
+    Container_Ext(ha_app, "Home Assistant Application")
+    Rel(ha_app, mqtt, "Subscribe", "MQTT Broker")
+    Rel(user, ha_app, "Control", "Home Assistant")
+}
+
+
+Container(mcz_stove_integration, "MCZ Stove Integration") {
+
+
+    Boundary(core, "Core") {
+          Boundary(core_use_case, "Core Use Cases") {
+              Component(get_stove_use_case, "Get Stoves", "Use case")
+              Component(stove_connection_status_use_case, "Stove Connection Status", "Use case")
+              Component(update_stove_state_use_case, "Update Stove State", "Use case")
+          }
+
+          Boundary(core_port, "Core Ports") {
+              Component(stove_publisher_port, "Stove Publisher Port", "Port")
+              Component(stove_repository_port, "Stove Repository Port", "Port")
+          }
+
+          Rel(get_stove_use_case, stove_repository_port, "Get Stove", "Repository")
+          Rel(stove_connection_status_use_case, stove_publisher_port, "Update Stove Connection Status", "Publisher")
+          Rel(update_stove_state_use_case, stove_publisher_port, "Update Stove State", "Publisher")
+
+      }
+    Boundary(infrastructure, "Infrastructure") {
+
+          Component(config, "Config", "Configuration")
+
+          Boundary(infrastructure_mqtt, "MQTT") {
+              Component(infrastructure_mqtt_service, "Mqtt Service", "")
+              Component(infrastructure_mqtt_client, "Mqtt Client", "")
+              Component(infrastructure_publisher_adapter, "Stove Publisher Adapter", "")
+
+              Rel(infrastructure_mqtt_service, infrastructure_publisher_adapter, "Control", "MQTT")
+              Rel(infrastructure_mqtt_client, mqtt, "Publish Message", "MQTT Broker")
+              Rel(infrastructure_publisher_adapter, infrastructure_mqtt_client, "Publish Stove State", "MQTT")
+          }
+
+          Boundary(infrastructure_websocket, "Websocket") {
+              Component(infrastructure_websocket_service, "Websocket Service", "")
+              Component(infrastructure_websocket_client, "Websocket client", "")
+
+              Rel(infrastructure_websocket_service, infrastructure_websocket_client, "Control", "Websocket")
+              Rel(infrastructure_websocket_client, mcz_websocket, "Subscribe stove state", "Websocket")
+
+              Rel(infrastructure_websocket_service, update_stove_state_use_case, "Update Stove State", "Use case")
+              Rel(infrastructure_websocket_service, stove_connection_status_use_case, "Update Stove Connection Status", "Use case")
+              Rel(infrastructure_websocket_service,get_stove_use_case, "Get Stoves", "Use case")
+          }
+
+          Component(infrastructure_stove_repository, "Stove Repository", "")
+          Rel(infrastructure_stove_repository, config, "Read Configuration", "Config")
+
+          ' Define IOC
+            Rel_L(stove_repository_port, infrastructure_stove_repository, "Use", "Port")
+            Rel_L(stove_publisher_port, infrastructure_publisher_adapter, "Use", "Port")
+
+      }
+
+}
+
+
+
+
+@enduml

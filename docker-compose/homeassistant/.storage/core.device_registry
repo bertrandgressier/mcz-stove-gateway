@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "minor_version": 8,
+  "key": "core.device_registry",
+  "data": {
+    "devices": [
+      {"area_id":null,"config_entries":["01JDHA416DSRTPT5K1XM0G491X"],"configuration_url":null,"connections":[],"created_at":"2024-11-25T09:23:25.518192+00:00","disabled_by":null,"entry_type":"service","hw_version":null,"id":"4fd41dc719f191813152d1daa4c30ec1","identifiers":[["sun","01JDHA416DSRTPT5K1XM0G491X"]],"labels":[],"manufacturer":null,"model":null,"model_id":null,"modified_at":"2024-11-25T09:23:25.518213+00:00","name_by_user":null,"name":"Sun","primary_config_entry":"01JDHA416DSRTPT5K1XM0G491X","serial_number":null,"sw_version":null,"via_device_id":null},
+      {"area_id":null,"config_entries":["01JDHCS4QGH6KCE5D3B0VG1M2W"],"configuration_url":"https://www.met.no/en","connections":[],"created_at":"2024-11-25T10:09:54.686702+00:00","disabled_by":null,"entry_type":"service","hw_version":null,"id":"4b9468d06612fc646cc5260eca9a9d31","identifiers":[["met","01JDHCS4QGH6KCE5D3B0VG1M2W"]],"labels":[],"manufacturer":"Met.no","model":"Forecast","model_id":null,"modified_at":"2024-11-25T10:09:54.686769+00:00","name_by_user":null,"name":"Forecast","primary_config_entry":"01JDHCS4QGH6KCE5D3B0VG1M2W","serial_number":null,"sw_version":null,"via_device_id":null},
+      {"area_id":null,"config_entries":["01JDHCZMRZK33YZF6VXF512F8Z"],"configuration_url":null,"connections":[],"created_at":"2024-11-26T13:56:49.697748+00:00","disabled_by":null,"entry_type":null,"hw_version":null,"id":"976640c6cc88975bd8277fe5780fa896","identifiers":[["mqtt","mcz_2207010010014"]],"labels":[],"manufacturer":"MCZ","model":null,"model_id":null,"modified_at":"2024-11-26T13:56:49.697952+00:00","name_by_user":null,"name":"MCZ Stove","primary_config_entry":"01JDHCZMRZK33YZF6VXF512F8Z","serial_number":null,"sw_version":null,"via_device_id":null}
+    ],
+    "deleted_devices": []
+  }
+}

@@ -1,0 +1,27 @@
+services:
+  mqtt:
+    image: eclipse-mosquitto
+    container_name: mqtt
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    ports:
+      - "1883:1883"
+  ha:
+    image: homeassistant/home-assistant
+    container_name: ha
+    volumes:
+      - ./homeassistant:/config
+    ports:
+      - "8123:8123"
+    depends_on:
+      - mqtt
+  stove-integration:
+    build: ..
+    container_name: stove-integration
+    volumes:
+      - ../config.yml:/usr/src/app/config.yml
+    depends_on:
+      - mqtt
+      - ha
