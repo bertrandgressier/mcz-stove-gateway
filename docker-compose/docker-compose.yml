@@ -18,10 +18,10 @@ services:
     depends_on:
       - mqtt
   stove-integration:
-    build: ..
+    build: ../app
     container_name: stove-integration
     volumes:
-      - ../config.yml:/usr/src/app/config.yml
+      - ../app/config.yml:/usr/src/app/config.yml
     depends_on:
       - mqtt
       - ha

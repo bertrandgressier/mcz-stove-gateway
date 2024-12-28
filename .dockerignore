@@ -3,5 +3,5 @@ dist
 *.log
 *.md
 .git
-config.yml
+app/config.yml
 docs
