@@ -5,7 +5,7 @@ name: Node.js CI
 permissions:
   contents: read
   pull-requests: write
-  
+
 on:
   push:
     branches: [ "main" ]
@@ -30,6 +30,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          cache-dependency-path: 'app'
       - name: Install Dependencies
         working-directory: app
         run: npm ci
