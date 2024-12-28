@@ -1,7 +1,7 @@
 # compiled output
-/dist
-/node_modules
-/build
+dist
+node_modules
+build
 
 # Logs
 logs
@@ -54,10 +54,10 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-/docker-compose/mosquitto/data/
-/docker-compose/mosquitto/log/
+docker-compose/mosquitto/data/
+docker-compose/mosquitto/log/
 
-config.yml
+app/config.yml
 .idea
 docker-compose/homeassistant/*
 docker-compose/mosquitto/data/*
