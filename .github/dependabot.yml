@@ -6,11 +6,20 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "app/" # Location of package manifests
+    directory: "app" # Location of package manifests
     schedule:
       interval: "weekly"
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    directory:
+      - "/app"
+      - "hassio-mcz-maestro"
+    # Check for updates once a week
+    schedule:
+      interval: "weekly"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: weekly
-      time: "06:00"
