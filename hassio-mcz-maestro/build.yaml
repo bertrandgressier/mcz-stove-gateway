@@ -1,10 +1,10 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-dockerfile
 build_from:
-  aarch64: "ghcr.io/home-assistant/aarch64-base-nodejs:0.2.5"
-  armv7: "ghcr.io/home-assistant/armv7-base-nodejs:0.2.5"
-  armhf: "ghcr.io/home-assistant/armv7-base-nodejs:0.2.5"
-  amd64: "ghcr.io/home-assistant/amd64-base-nodejs:0.2.5"
-  i386: "ghcr.io/home-assistant/amd64-base-nodejs:0.2.5"
+  aarch64: "ghcr.io/hassio-addons/base-nodejs/aarch64:0.2.5"
+  armv7: "ghcr.io/hassio-addons/base-nodejs/armv7:0.2.5"
+  armhf: "ghcr.io/hassio-addons/base-nodejs/armv7:0.2.5"
+  amd64: "ghcr.io/hassio-addons/base-nodejs/amd64:0.2.5"
+  i386: "ghcr.io/hassio-addons/base-nodejs/amd64:0.2.5"
 labels:
   org.opencontainers.image.title: "MCZ Maestro Integration"
   org.opencontainers.image.description: "MCZ Stove Integration only for Maestro V1 (old version)"
