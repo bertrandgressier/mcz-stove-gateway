@@ -1,0 +1,4 @@
+# https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
+name: MCZ Stove Integration
+url: 'https://github.com/bertrandgressier/mcz-stove-gateway'
+maintainer: Bertrand Gressier <bertrand.gressier@gmail.com>
