@@ -1,16 +1,40 @@
 ---
 name: MCZ Maestro Integration
 description: MCZ Stove Integration only for Maestro V1 (old version)
-version: 1.0.0
+version: 1.0.1
 slug: mcz-maestro
 init: false
 url: https://github.com/bertrandgressier/mcz-stove-gateway/tree/main/hassio-mcz-maestro
-map:
-  - share:rw
 arch:
-  - armhf
   - armv7
   - aarch64
   - amd64
-  - i386
+map:
+  - addon_config
+options:
+  setup:
+    debug: false
+  mqtt:
+    url: "mqtt://core-mosquitto"
+    username: ""
+    password: ""
+    mqttTopicPath: "MczStove"
+  ws:
+    url: "http://app.mcz.it:9000"
+  stoves:
+    - serialNumber: "00000000000000"
+      macAddress: "XXXXXXXXXXXX"
+schema:
+  setup:
+    debug: boolean
+  mqtt:
+    url: url
+    username: str
+    password: password
+    mqttTopicPath: str
+  ws:
+    url: url
+  stoves:
+    - serialNumber: str
+      macAddress: str
 image: "ghcr.io/bertrandgressier/{arch}-addon-hassio-mcz-maestro"
