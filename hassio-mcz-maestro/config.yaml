@@ -9,4 +9,32 @@ arch:
   - armv7
   - aarch64
   - amd64
+map:
+  - addon_config
+options:
+  setup:
+    debug: false
+  mqtt:
+    url: "mqtt://core-mosquitto"
+    username: ""
+    password: ""
+    mqttTopicPath: "MczStove"
+  ws:
+    url: "http://app.mcz.it:9000"
+  stoves:
+    - serialNumber: "00000000000000"
+      macAddress: "XXXXXXXXXXXX"
+schema:
+  setup:
+    debug: boolean
+  mqtt:
+    url: url
+    username: str
+    password: password
+    mqttTopicPath: str
+  ws:
+    url: url
+  stoves:
+    - serialNumber: str
+      macAddress: str
 image: "ghcr.io/bertrandgressier/{arch}-addon-hassio-mcz-maestro"

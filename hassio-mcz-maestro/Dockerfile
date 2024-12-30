@@ -22,6 +22,8 @@ FROM base as release
 WORKDIR /app
 ENV NODE_ENV production
 
+RUN apk add yq
+
 COPY rootfs /
 COPY --from=build /build/app/dist ./dist
 COPY --from=build /build/app/package* ./
