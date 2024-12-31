@@ -8,8 +8,6 @@ arch:
   - armv7
   - aarch64
   - amd64
-map:
-  - share:rw
 options:
   setup:
     debug: false
@@ -21,7 +19,7 @@ options:
   ws:
     url: "http://app.mcz.it:9000"
   stoves:
-    - serialNumber: "00000000000000"
+    - serialNumber: 12345678
       macAddress: "XXXXXXXXXXXX"
 schema:
   setup:
@@ -34,6 +32,6 @@ schema:
   ws:
     url: url
   stoves:
-    - serialNumber: str
+    - serialNumber: int
       macAddress: str
 image: "ghcr.io/bertrandgressier/{arch}-addon-hassio-mcz-maestro-dev"
