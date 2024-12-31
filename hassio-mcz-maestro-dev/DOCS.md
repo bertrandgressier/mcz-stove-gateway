@@ -1,4 +1,4 @@
-# MCZ Maestro integration for Home Assistant
+# MCZ Maestro integration for Home Assistant - DEV Version
 
 This integration allows you to control your MCZ Maestro pellet stove from Home Assistant.
 

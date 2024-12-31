@@ -8,7 +8,7 @@ FROM base as build
 
 RUN apk add git
 
-RUN echo "Installing Dev version"
+RUN echo "Installing main version"
 RUN node --version
 RUN npm version
 RUN git clone -b main --single-branch --depth 1 https://github.com/bertrandgressier/mcz-stove-gateway /build

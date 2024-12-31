@@ -1,7 +1,7 @@
 ---
-name: MCZ Maestro Integration
+name: MCZ Maestro Integration - DEV
 description: MCZ Stove Integration only for Maestro V1 (old version)
-version: 1.0.2
+version: dev
 slug: mcz-maestro
 init: false
 url: https://github.com/bertrandgressier/mcz-stove-gateway/tree/main/hassio-mcz-maestro
@@ -10,7 +10,7 @@ arch:
   - aarch64
   - amd64
 map:
-  - addon_config
+  - share:rw
 options:
   setup:
     debug: false
@@ -37,4 +37,4 @@ schema:
   stoves:
     - serialNumber: str
       macAddress: str
-image: "ghcr.io/bertrandgressier/{arch}-addon-hassio-mcz-maestro"
+image: "ghcr.io/bertrandgressier/{arch}-addon-hassio-mcz-maestro-dev"
