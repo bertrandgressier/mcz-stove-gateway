@@ -25,7 +25,7 @@ options:
       macAddress: "XXXXXXXXXXXX"
 schema:
   setup:
-    debug: boolean
+    debug: bool
   mqtt:
     url: url
     username: str
