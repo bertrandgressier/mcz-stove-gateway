@@ -1,7 +1,7 @@
 ---
 name: MCZ Maestro Integration
 description: MCZ Stove Integration only for Maestro V1 (old version)
-version: 1.1
+version: 1.0.2
 slug: mcz-maestro
 init: false
 url: https://github.com/bertrandgressier/mcz-stove-gateway/tree/main/hassio-mcz-maestro
