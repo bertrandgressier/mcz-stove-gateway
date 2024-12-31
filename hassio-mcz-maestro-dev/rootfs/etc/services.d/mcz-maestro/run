@@ -7,10 +7,9 @@
 ## Print the message the user supplied, defaults to "Hello World..."
 bashio::log.info "Start project mcz-maestro"
 
-cp /data/* /share
-
 ## copy config file to app with yaml extension
-cat /data/options.json | yq -P > /app/dist/config.yaml
+cat /data/options.json | yq -P > /app/config.yml
 
 ## Run your program
-exec cd /app && node dist/main.js
+cd /app
+exec node dist/main.js
