@@ -1,4 +1,4 @@
-# MCZ Maestro Stove Integration for Home Assistant
+# MCZ Maestro Stove Integration for Home Assistant - DEV
 
 ![Supports aarch64 Architecture][aarch64-shield]
 ![Supports amd64 Architecture][amd64-shield]
@@ -15,3 +15,6 @@
 [armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
 
 [i386-shield]: https://img.shields.io/badge/i386-no-red.svg
+
+
+This is the dev version, you should remove the addon and reinstall it to update it in home assistant

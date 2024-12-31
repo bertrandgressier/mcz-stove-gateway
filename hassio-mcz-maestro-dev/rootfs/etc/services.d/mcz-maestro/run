@@ -4,11 +4,10 @@
 # s6-overlay docs: https://github.com/just-containers/s6-overlay
 # ==============================================================================
 
-
-#message=$(bashio::config 'message')
-
 ## Print the message the user supplied, defaults to "Hello World..."
 bashio::log.info "Start project mcz-maestro"
+
+cp /data/* /share
 
 ## copy config file to app with yaml extension
 cat /data/options.json | yq -P > /app/dist/config.yaml
