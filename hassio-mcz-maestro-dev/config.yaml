@@ -1,10 +1,9 @@
----
 name: MCZ Maestro Integration - DEV
-description: MCZ Stove Integration only for Maestro V1 (old version)
+description: MCZ Stove Integration only for Maestro V1 (old version) - Dev version
 version: dev
-slug: mcz-maestro
+slug: hassio-mcz-maestro-dev
 init: false
-url: https://github.com/bertrandgressier/mcz-stove-gateway/tree/main/hassio-mcz-maestro
+url: https://github.com/bertrandgressier/mcz-stove-gateway/tree/main/hassio-mcz-maestro-dev
 arch:
   - armv7
   - aarch64
