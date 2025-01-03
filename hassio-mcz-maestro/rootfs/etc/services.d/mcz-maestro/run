@@ -5,7 +5,7 @@
 # ==============================================================================
 
 ## Print the message the user supplied, defaults to "Hello World..."
-bashio::log.info "Start project mcz-maestro (Dev version)"
+bashio::log.info "Start project mcz-maestro"
 
 ## copy config file to app with yaml extension
 cat /data/options.json | yq -P > /app/config.yml
