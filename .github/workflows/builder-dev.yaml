@@ -1,0 +1,101 @@
+name: Build dev version
+permissions:
+  contents: read
+  pull-requests: write
+on:
+  push:
+    branches:
+      - main
+env:
+  BUILD_ARGS: "--test"
+
+jobs:
+  build_app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: 'npm'
+          cache-dependency-path: 'app'
+      - name: Install Dependencies
+        working-directory: app
+        run: npm ci
+      - name: Build
+        working-directory: app
+        run: npm run build --if-present
+      - name: Test
+        working-directory: app
+        run: npm test
+      - name: Save dist
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: app/dist
+  build_addon:
+    needs: build_app
+    runs-on: ubuntu-latest
+    name: Build ${{ matrix.arch }} dev add-on
+    strategy:
+      matrix:
+        arch: [ armv7, aarch64, amd64 ]
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - name: Get information
+        id: info
+        uses: home-assistant/actions/helpers/info@63e30948bbe9d4db51e4227be24269c2a232e6b8 # master
+        with:
+          path: "./hassio-mcz-maestro-dev"
+      - name: Check if add-on should be built
+        id: check
+        run: |
+          if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then
+            echo "Image property is not defined, skipping build"
+            echo "build_arch=false" >> $GITHUB_OUTPUT;
+          elif [[ "${{ steps.info.outputs.architectures }}" =~ ${{ matrix.arch }} ]]; then
+            echo "build_arch=true" >> $GITHUB_OUTPUT;
+            echo "image=$(echo ${{ steps.info.outputs.image }} | cut -d'/' -f3)" >> $GITHUB_OUTPUT;
+            if [[ -z "${{ github.head_ref }}" ]] && [[ "${{ github.event_name }}" == "push" ]]; then
+                echo "BUILD_ARGS=" >> $GITHUB_ENV;
+            fi
+          else
+            echo "${{ matrix.arch }} is not a valid arch for DEV, skipping build";
+            echo "build_arch=false" >> $GITHUB_OUTPUT;
+          fi
+      - name: Download dist
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: hassio-mcz-maestro-dev/app/dist
+
+      - name: copy package.json
+        run: cp app/package.json hassio-mcz-maestro-dev/app
+
+      - name: copy package-lock.json
+        run: cp app/package-lock.json hassio-mcz-maestro-dev/app
+
+      - name: Login to GitHub Container Registry
+        if: env.BUILD_ARGS != '--test'
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build dev add-on
+        if: steps.check.outputs.build_arch == 'true'
+        uses: home-assistant/builder@2024.08.2
+        with:
+          args: |
+            ${{ env.BUILD_ARGS }} \
+            --${{ matrix.arch }} \
+            --target /data/hassio-mcz-maestro-dev \
+            --image "${{ steps.check.outputs.image }}" \
+            --docker-hub "ghcr.io/${{ github.repository_owner }}" \
+            --addon
+          
+        
