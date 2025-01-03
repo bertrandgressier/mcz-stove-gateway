@@ -68,7 +68,7 @@ jobs:
             echo "build_arch=false" >> $GITHUB_OUTPUT;
           fi
       - name: Download dist
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: dist
           path: hassio-mcz-maestro-dev/app/dist
