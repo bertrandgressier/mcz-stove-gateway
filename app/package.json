@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "MCZ Stove Integration with MQTT in Home Assistant",
   "author": "Bertrand Gressier",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
