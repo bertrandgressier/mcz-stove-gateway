@@ -4,4 +4,6 @@ export abstract class StovePublisherPort {
   abstract publish(stoveId: string, stove: StoveState): void;
 
   abstract connected(stoveId: string, status: boolean): void;
+
+  abstract setupHomeAssistant(stoveId: string): void;
 }

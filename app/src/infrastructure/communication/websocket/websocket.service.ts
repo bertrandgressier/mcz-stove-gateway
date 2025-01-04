@@ -132,6 +132,7 @@ export class WebsocketService implements OnApplicationBootstrap {
         power4Operating: data.power4Operating,
         power5Operating: data.power5Operating,
       },
+      timestamp: Date.now(),
     };
   }
 }

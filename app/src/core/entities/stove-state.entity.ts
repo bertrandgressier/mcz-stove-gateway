@@ -44,4 +44,5 @@ export class StoveState {
   sleepMode: boolean;
 
   powerOperating: PowerOperating;
+  timestamp: number;
 }

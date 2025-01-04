@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { StovePublisherPort } from './core/port/driver/stove-publisher.port';
 import { StoveRepositoryPort } from './core/port/driver/stove-repository.port';
 import { GetStovesUseCase } from './core/use-cases/get-stoves.use-case';
+import { HomeAssistantUseCase } from './core/use-cases/home-assistant.use-case';
 import { StoveConnectionStatusUseCase } from './core/use-cases/stove-connection-status.use-case';
 import { UpdateStoveStateUseCase } from './core/use-cases/update-stove-state.use-case';
 import { MqttConnectionService } from './infrastructure/communication/mqtt/mqtt-connection.service';
@@ -31,6 +32,13 @@ import { StoveRepository } from './infrastructure/persistence/stove.repository';
     GetStovesUseCase,
     StoveConnectionStatusUseCase,
     UpdateStoveStateUseCase,
+    HomeAssistantUseCase,
   ],
 })
-export class StoveModule {}
+export class StoveModule implements OnApplicationBootstrap {
+  constructor(private homeAssistant: HomeAssistantUseCase) {}
+
+  onApplicationBootstrap() {
+    this.homeAssistant.setupHomeAssistant();
+  }
+}

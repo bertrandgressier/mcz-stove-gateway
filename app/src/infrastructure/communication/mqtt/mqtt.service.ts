@@ -16,11 +16,6 @@ export class MqttService implements OnApplicationBootstrap {
   }
 
   onApplicationBootstrap() {
-    // this.mqtt.publishStoveMessage(
-    //   `serviceStartedDate`,
-    //   new Date().toISOString(),
-    // );
-
     this.mqtt.connect(this.config);
 
     this.mqtt.onConnected().subscribe((connected) => {
