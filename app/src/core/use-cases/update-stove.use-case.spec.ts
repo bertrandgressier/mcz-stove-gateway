@@ -39,6 +39,7 @@ describe('StoveEntity Domain', () => {
         power4Operating: 0,
         power5Operating: 0,
       },
+      timestamp: 0,
     };
 
     updateStoveInformation.updateStoveState('1234', dataMock);

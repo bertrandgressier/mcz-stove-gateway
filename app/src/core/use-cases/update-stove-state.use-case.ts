@@ -9,7 +9,7 @@ export class UpdateStoveStateUseCase {
   constructor(private readonly publisher: StovePublisherPort) {}
 
   updateStoveState(stoveId: string, stoveData: StoveState) {
-    this.logger.log(`[${stoveId}] Updating stove state...`);
+    this.logger.debug(`[${stoveId}] Updating stove state...`);
     this.publisher.publish(stoveId, stoveData);
   }
 }

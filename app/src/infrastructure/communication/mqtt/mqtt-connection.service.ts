@@ -38,12 +38,17 @@ export class MqttConnectionService {
   }
 
   publishStoveMessage(topic: string, object: any) {
-    this.publishMessage(`${this.mqttTopicPath}/${topic}`, object);
+    this.publishMessage(`${this.mqttTopicPath}/${topic}`, object, true);
   }
 
-  publishMessage(topic: string, object: any) {
-    const message = JSON.stringify(object);
-    this.client.publish(topic, message, { qos: 0 }, (err) => {
+  publishMessage(topic: string, object: any, retain = false) {
+    let message;
+    if (typeof object === 'string') {
+      message = object;
+    } else {
+      message = JSON.stringify(object);
+    }
+    this.client.publish(topic, message, { qos: 0, retain }, (err) => {
       if (err) {
         this.logger.error(`Publish mqtt message error: ${err}`);
       } else {
