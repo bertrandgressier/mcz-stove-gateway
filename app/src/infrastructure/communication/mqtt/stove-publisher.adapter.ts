@@ -1,7 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { StoveState } from '../../../core/entities/stove-state.entity';
 import { StovePublisherPort } from '../../../core/port/driver/stove-publisher.port';
-import { sensors, setupSensorConfig } from './homeassistant-configurator';
+import {
+  binarySensors,
+  sensors,
+  setupBinarySensorConfig,
+  setupClimateConfig,
+  setupSensorConfig,
+} from './homeassistant-configurator';
 import { MqttConnectionService } from './mqtt-connection.service';
 import { stoveMqttRecordMapper } from './stove-mqtt.dto';
 
@@ -14,6 +20,7 @@ export class StovePublisherAdapter implements StovePublisherPort {
   setupHomeAssistant(stoveId: string): void {
     this.logger.log(`Setting up Home Assistant for stove [${stoveId}]`);
 
+    //publish sensors config
     sensors.forEach((sensor) => {
       const name_camel_case = sensor.name.replace(/ /g, '_').toLowerCase();
       const sensorConfig = setupSensorConfig(
@@ -22,11 +29,28 @@ export class StovePublisherAdapter implements StovePublisherPort {
         sensor.valueTemplate,
         sensor.deviceClass,
       );
-      const type = sensor.deviceClass === 'heat' ? 'binary_sensor' : 'sensor';
-      const topic = `homeassistant/${type}/mcz_${stoveId}/${name_camel_case}/config`;
+      const topic = `homeassistant/sensor/mcz_${stoveId}/${name_camel_case}/config`;
 
       this.mqttService.publishMessage(topic, sensorConfig, true);
     });
+
+    //publish binary sensor config
+    binarySensors.forEach((sensor) => {
+      const name_camel_case = sensor.name.replace(/ /g, '_').toLowerCase();
+      const sensorConfig = setupBinarySensorConfig(
+        stoveId,
+        sensor.name,
+        sensor.valueTemplate,
+      );
+      const topic = `homeassistant/binary_sensor/mcz_${stoveId}/${name_camel_case}/config`;
+
+      this.mqttService.publishMessage(topic, sensorConfig, true);
+    });
+
+    //publish climate config
+    const climateConfig = setupClimateConfig(stoveId);
+    const climateTopic = `homeassistant/climate/mcz_${stoveId}/config`;
+    this.mqttService.publishMessage(climateTopic, climateConfig, true);
   }
 
   connected(stoveId: string, connected: boolean): void {

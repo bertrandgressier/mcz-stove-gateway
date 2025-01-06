@@ -19,7 +19,7 @@ options:
   ws:
     url: "http://app.mcz.it:9000"
   stoves:
-    - serialNumber: 12345678
+    - serialNumber: "12345678"
       macAddress: "XXXXXXXXXXXX"
 schema:
   setup:
@@ -32,6 +32,6 @@ schema:
   ws:
     url: url
   stoves:
-    - serialNumber: int
+    - serialNumber: str
       macAddress: str
 image: "ghcr.io/bertrandgressier/{arch}-addon-hassio-mcz-maestro"

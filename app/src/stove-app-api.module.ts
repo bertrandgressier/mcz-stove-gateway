@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 import { StovePublisherPort } from './core/port/driver/stove-publisher.port';
@@ -42,11 +42,10 @@ import { StoveRepository } from './infrastructure/persistence/stove.repository';
   ],
   controllers: [StoveApiController],
 })
-export class StoveAppApiModule {
-  // implements OnApplicationBootstrap {
-  // constructor(private homeAssistant: HomeAssistantUseCase) {}
-  //
-  // onApplicationBootstrap() {
-  //   this.homeAssistant.setupHomeAssistant();
-  // }
+export class StoveAppApiModule implements OnApplicationBootstrap {
+  constructor(private homeAssistant: HomeAssistantUseCase) {}
+
+  onApplicationBootstrap() {
+    this.homeAssistant.setupHomeAssistant();
+  }
 }
