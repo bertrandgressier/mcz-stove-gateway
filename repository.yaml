@@ -1,4 +1,4 @@
 # https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
-name: Hassio Bertrand Respository - (MCZ Stove)
+name: Bertrand Repo - MCZ Stove
 url: 'https://github.com/bertrandgressier/mcz-stove-gateway'
 maintainer: Bertrand Gressier <bertrand.gressier@gmail.com>
