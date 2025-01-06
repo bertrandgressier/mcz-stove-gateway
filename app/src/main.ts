@@ -1,8 +1,8 @@
 import { LogLevel } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import configuration from './config/configuration';
+import { StoveAppModule } from './stove-app.module';
 
 async function bootstrap() {
   const appContext = await NestFactory.createApplicationContext(
@@ -17,7 +17,7 @@ async function bootstrap() {
     ? ['log', 'error', 'warn', 'debug', 'verbose']
     : ['log', 'error', 'warn'];
 
-  await NestFactory.createApplicationContext(AppModule, {
+  await NestFactory.createApplicationContext(StoveAppModule, {
     logger: loggerLevel,
   });
 }

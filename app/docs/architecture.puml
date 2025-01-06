@@ -7,6 +7,7 @@ title HA/MQTT MCZ Stove Integration
 remove @unlinked
 
 Person(user, "User", "A person using the system")
+Person(developer, "Developer")
 
 ContainerQueue_Ext(mqtt, "MQTT Broker")
 
@@ -68,6 +69,18 @@ Container(mcz_stove_integration, "MCZ Stove Integration") {
               Rel(infrastructure_websocket_service, update_stove_state_use_case, "Update Stove State", "Use case")
               Rel(infrastructure_websocket_service, stove_connection_status_use_case, "Update Stove Connection Status", "Use case")
               Rel(infrastructure_websocket_service,get_stove_use_case, "Get Stoves", "Use case")
+          }
+
+          Boundary(infrastructure_stove_api, "Stove API") {
+              Component(infrastructure_stove_api_service, "Stove API Service", "")
+              Component(infrastructure_stove_api_controller, "Stove API Controller", "")
+              Rel(infrastructure_stove_api_service, infrastructure_stove_api_controller, "Control", "API")
+
+              Rel(infrastructure_stove_api_service, update_stove_state_use_case, "Update Stove State", "Use case")
+              Rel(infrastructure_stove_api_service, stove_connection_status_use_case, "Update Stove Connection Status", "Use case")
+              Rel(infrastructure_stove_api_service,get_stove_use_case, "Get Stoves", "Use case")
+
+              Rel(developer, infrastructure_stove_api_controller, "Control", "API")
           }
 
           Component(infrastructure_stove_repository, "Stove Repository", "")

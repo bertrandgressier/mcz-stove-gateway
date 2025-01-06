@@ -43,7 +43,7 @@ export const configSchema = Joi.object<AppConfig>({
   stoves: Joi.array()
     .items(
       Joi.object<StoveConfig>({
-        serialNumber: Joi.number().required(),
+        serialNumber: Joi.string().required(),
         macAddress: Joi.string().required(),
       }),
     )

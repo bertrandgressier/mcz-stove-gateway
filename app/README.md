@@ -34,11 +34,33 @@ stoves:
 
 ## Installation
 
-TBD
+### From source
+
+```bash 
+npm install
+npm run start
+```
+
+### From docker
+
+I need to create the docker image and push it to a registry.
+Instead of that, you can build the image locally.
 
 ## Home assistant Integration
 
-TBD
+Go to addon into this repository and follow the instructions.
+[Addon](../hassio-mcz-maestro)
+
+## Development
+
+You can simulate the stove without a real connection to the MCZ servers.
+Run the server with the command
+
+```bash
+npm run start:api
+```
+
+Go to [localhost:3000](http://localhost:3000/api) and you can use the stove API
 
 # License
 
