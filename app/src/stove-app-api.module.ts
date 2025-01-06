@@ -1,5 +1,6 @@
-import { Module, OnApplicationBootstrap } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import configuration from './config/configuration';
 import { StovePublisherPort } from './core/port/driver/stove-publisher.port';
 import { StoveRepositoryPort } from './core/port/driver/stove-repository.port';
 import { GetStovesUseCase } from './core/use-cases/get-stoves.use-case';
@@ -9,16 +10,21 @@ import { UpdateStoveStateUseCase } from './core/use-cases/update-stove-state.use
 import { MqttConnectionService } from './infrastructure/communication/mqtt/mqtt-connection.service';
 import { MqttService } from './infrastructure/communication/mqtt/mqtt.service';
 import { StovePublisherAdapter } from './infrastructure/communication/mqtt/stove-publisher.adapter';
-import { MczStoveWebsocket } from './infrastructure/communication/websocket/mczStoveWebsocket';
-import { WebsocketService } from './infrastructure/communication/websocket/websocket.service';
+import { StoveApiController } from './infrastructure/communication/stove-api/stove-api.controller';
+import { StoveApiService } from './infrastructure/communication/stove-api/stove-api.service';
 import { StoveRepository } from './infrastructure/persistence/stove.repository';
 
 @Module({
+  imports: [
+    ConfigModule.forRoot({
+      load: [configuration],
+      isGlobal: true,
+    }),
+  ],
   providers: [
     ConfigService,
     MqttService,
-    MczStoveWebsocket,
-    WebsocketService,
+    StoveApiService,
     MqttConnectionService,
     {
       provide: StovePublisherPort,
@@ -34,11 +40,13 @@ import { StoveRepository } from './infrastructure/persistence/stove.repository';
     UpdateStoveStateUseCase,
     HomeAssistantUseCase,
   ],
+  controllers: [StoveApiController],
 })
-export class StoveModule implements OnApplicationBootstrap {
-  constructor(private homeAssistant: HomeAssistantUseCase) {}
-
-  onApplicationBootstrap() {
-    this.homeAssistant.setupHomeAssistant();
-  }
+export class StoveAppApiModule {
+  // implements OnApplicationBootstrap {
+  // constructor(private homeAssistant: HomeAssistantUseCase) {}
+  //
+  // onApplicationBootstrap() {
+  //   this.homeAssistant.setupHomeAssistant();
+  // }
 }
