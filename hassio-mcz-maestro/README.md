@@ -1,4 +1,4 @@
-# MCZ Maestro Stove Integration for Home Assistant - DEV
+# MCZ Maestro Stove Integration for Home Assistant
 
 ![Supports aarch64 Architecture][aarch64-shield]
 ![Supports amd64 Architecture][amd64-shield]
@@ -16,5 +16,26 @@
 
 [i386-shield]: https://img.shields.io/badge/i386-no-red.svg
 
+Addon to manage MCZ Maestro Stove in Home Assistant.
 
-This is the dev version, you should remove the addon and reinstall it to update it in home assistant
+Go to the [app](../app) repository to see the architecture and how it works.
+
+This application need MQTT to work. It setup MQTT discovery and publish the stove information.
+
+_It's still in development._
+
+## Backlog
+
+- [ ] Add missing attributes from the stove
+- [ ] Add Fan information
+- [ ] Control the stove from HA : turn on/off
+- [ ] Control the stove from HA : Change the target temperature
+- [ ] Control the stove from HA : Fan control
+- [ ] Compute the consumption of pellets
+- [ ] Use MQTT configuration from HA
+
+## Addon in Home Assistant
+
+![MCZ Maestro Stove Integration](./docs/stove-data-ha.png)
+![MCZ Maestro Stove Integration](./docs/stove-climate.png)
+
