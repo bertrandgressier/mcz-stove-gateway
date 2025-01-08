@@ -1,5 +1,11 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 1.2.1
+
+[Full change log 1.2.1](https://github.com/bertrandgressier/mcz-stove-gateway/releases/tag/1.2.1)
+
+- fix status state
+
 ## 1.2.0
 
 [Full change log 1.2.0](https://github.com/bertrandgressier/mcz-stove-gateway/releases/tag/1.2.0)

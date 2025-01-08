@@ -100,7 +100,7 @@ export const sensors: HASensor[] = [
     icon: 'mdi:numeric',
   },
   {
-    name: 'status Description',
+    name: 'Status description',
     valueTemplate: 'statusDescription',
     deviceClass: null,
     icon: 'mdi:fireplace',
