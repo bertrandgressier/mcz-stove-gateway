@@ -31,6 +31,8 @@ export class StoveApiService implements OnApplicationBootstrap {
 
   updateStoveState(stoveId: string, stoveData: StoveStateDto) {
     const stoveState: StoveState = {
+      statusId: stoveData.statusId,
+      statusDescription: stoveData.statusDescription,
       activeMode: stoveData.activeMode,
       activePower: stoveData.activePower,
       activeTemperature: stoveData.activeTemperature,

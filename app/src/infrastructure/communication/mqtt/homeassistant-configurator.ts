@@ -8,8 +8,9 @@ interface SensorConfig {
   unique_id: string;
   state_topic: string;
   availability_topic: string;
-  unit_of_measurement: string;
-  device_class: string;
+  unit_of_measurement?: string;
+  device_class?: string;
+  icon?: string;
   value_template: string;
 }
 
@@ -37,7 +38,8 @@ type deviceClass = 'temperature' | 'speed' | 'durationSecond' | 'durationHour';
 interface HASensor {
   name: string;
   valueTemplate: string;
-  deviceClass: deviceClass;
+  deviceClass?: deviceClass;
+  icon?: string;
 }
 
 export const sensors: HASensor[] = [
@@ -90,6 +92,18 @@ export const sensors: HASensor[] = [
     name: 'Hours Service',
     valueTemplate: 'powerOperating.hoursService',
     deviceClass: 'durationHour',
+  },
+  {
+    name: 'Status Id',
+    valueTemplate: 'statusId',
+    deviceClass: null,
+    icon: 'mdi:numeric',
+  },
+  {
+    name: 'status Description',
+    valueTemplate: 'statusDescription',
+    deviceClass: null,
+    icon: 'mdi:fireplace',
   },
 ];
 
@@ -173,34 +187,52 @@ export const setupSensorConfig = (
   stoveId: string,
   name: string,
   valueTemplate: string,
-  deviceClass: deviceClass,
+  deviceClass?: deviceClass,
+  icon?: string,
 ): SensorConfig => {
   //snake case of name
   const unique_id = `mcz_${stoveId}_${name.replace(/\s+/g, '_').toLowerCase()}`;
-  return {
-    device: {
-      identifiers: [`mcz_${stoveId}`],
-      name: 'MCZ Stove',
-      manufacturer: 'MCZ',
-    },
-    name: name,
-    unique_id,
-    state_topic: `MczStove/${stoveId}/stoveData`,
-    availability_topic: `MczStove/${stoveId}/connected`,
-    unit_of_measurement:
-      deviceClass === 'temperature'
-        ? '°C'
-        : deviceClass === 'speed'
-          ? 'RPM'
-          : deviceClass === 'durationSecond'
-            ? 's'
-            : deviceClass === 'durationHour'
-              ? 'h'
-              : '',
-    device_class:
-      deviceClass === 'durationSecond' || deviceClass === 'durationHour'
-        ? 'duration'
-        : deviceClass,
-    value_template: `{{ value_json.${valueTemplate} }}`,
-  };
+
+  if (deviceClass !== null) {
+    return {
+      device: {
+        identifiers: [`mcz_${stoveId}`],
+        name: 'MCZ Stove',
+        manufacturer: 'MCZ',
+      },
+      name: name,
+      unique_id,
+      state_topic: `MczStove/${stoveId}/stoveData`,
+      availability_topic: `MczStove/${stoveId}/connected`,
+      unit_of_measurement:
+        deviceClass === 'temperature'
+          ? '°C'
+          : deviceClass === 'speed'
+            ? 'RPM'
+            : deviceClass === 'durationSecond'
+              ? 's'
+              : deviceClass === 'durationHour'
+                ? 'h'
+                : '',
+      device_class:
+        deviceClass === 'durationSecond' || deviceClass === 'durationHour'
+          ? 'duration'
+          : deviceClass,
+      value_template: `{{ value_json.${valueTemplate} }}`,
+    };
+  } else {
+    return {
+      device: {
+        identifiers: [`mcz_${stoveId}`],
+        name: 'MCZ Stove',
+        manufacturer: 'MCZ',
+      },
+      name: name,
+      unique_id,
+      state_topic: `MczStove/${stoveId}/stoveData`,
+      availability_topic: `MczStove/${stoveId}/connected`,
+      value_template: `{{ value_json.${valueTemplate} }}`,
+      icon,
+    };
+  }
 };

@@ -27,6 +27,8 @@ export class PowerOperating {
 }
 
 export class StoveState {
+  statusId: number;
+  statusDescription: string;
   activePower: StovePower;
   fanMode: number;
   regulationMode: boolean;

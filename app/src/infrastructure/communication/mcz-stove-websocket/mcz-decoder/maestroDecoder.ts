@@ -17,9 +17,11 @@ export const valueDecoder = (value: string, type: MaestroType) => {
     case MaestroType.float:
       return parseInt(value, 16) / 2;
     case MaestroType.state:
-      return stoveStates.find(
-        (stroveState) => stroveState.id === parseInt(value, 16),
+      const stoveStateId = parseInt(value, 16);
+      const stoveStateResult = stoveStates.find(
+        (stoveState) => stoveState.id === stoveStateId,
       );
+      return stoveStateResult ?? { id: stoveStateId, description: 'Unknown' };
     case MaestroType.boolean:
       return value === '01';
   }
