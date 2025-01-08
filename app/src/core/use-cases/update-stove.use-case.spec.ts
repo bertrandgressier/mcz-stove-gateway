@@ -16,6 +16,8 @@ describe('StoveEntity Domain', () => {
     );
 
     const dataMock: StoveState = {
+      statusId: 0,
+      statusDescription: 'statusDescription',
       activeMode: false,
       activePower: undefined,
       activeTemperature: 0,

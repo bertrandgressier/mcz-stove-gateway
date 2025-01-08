@@ -54,7 +54,7 @@ export const stoveStates: MczStoveState[] = [
   { id: 30, description: 'Diagnostics' },
   { id: 31, description: 'On', on: true },
   { id: 40, description: 'Extinguish', on: false },
-  { id: 41, description: 'Cooling', on: true },
+  { id: 41, description: 'Cooling', on: false },
   { id: 42, description: 'Cleaning Low', on: true },
   { id: 43, description: 'Cleaning High', on: true },
   { id: 44, description: 'UNLOCKING SCREW' },

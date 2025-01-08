@@ -1,4 +1,6 @@
 export class StoveStateDto {
+  statusId: number;
+  statusDescription: string;
   activated: boolean;
   activeTemperature: number;
   autoMode: boolean;

@@ -108,6 +108,8 @@ export class WebsocketService implements OnApplicationBootstrap {
 
   private stoveEntityMapper(data: MaestroObject): StoveState {
     return {
+      statusId: data.stoveStatus.id,
+      statusDescription: data.stoveStatus.description,
       activated: data.stoveStatus.on ?? false,
       activeTemperature: data.activeLive,
       autoMode: data.chronometerThermostatMode ?? false,
