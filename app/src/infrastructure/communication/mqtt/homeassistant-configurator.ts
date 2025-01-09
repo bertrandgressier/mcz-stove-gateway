@@ -31,6 +31,7 @@ interface SensorBinaryConfig {
 interface HABinarySensor {
   name: string;
   valueTemplate: string;
+  removed?: boolean;
 }
 
 type deviceClass = 'temperature' | 'speed' | 'durationSecond' | 'durationHour';
@@ -105,6 +106,12 @@ export const sensors: HASensor[] = [
     deviceClass: null,
     icon: 'mdi:fireplace',
   },
+  {
+    name: 'Activated',
+    valueTemplate: 'activated',
+    deviceClass: null,
+    icon: 'mdi:string',
+  },
 ];
 
 export const binarySensors: HABinarySensor[] = [
@@ -131,6 +138,7 @@ export const binarySensors: HABinarySensor[] = [
   {
     name: 'Activated',
     valueTemplate: 'activated',
+    removed: true,
   },
 ];
 
