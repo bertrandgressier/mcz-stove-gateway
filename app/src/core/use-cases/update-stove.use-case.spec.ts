@@ -1,5 +1,5 @@
 import { mock, MockProxy } from 'jest-mock-extended';
-import { StoveState } from '../entities/stove-state.entity';
+import { StoveState, StoveStatus } from '../entities/stove-state.entity';
 import { StovePublisherPort } from '../port/driver/stove-publisher.port';
 import { UpdateStoveStateUseCase } from './update-stove-state.use-case';
 
@@ -32,7 +32,7 @@ describe('StoveEntity Domain', () => {
       smokesTemperature: 0,
       targetTemperature: 100,
       ambientTemperature: 50,
-      activated: true,
+      activated: StoveStatus.ON,
       powerOperating: {
         hoursService: 0,
         power1Operating: 0,
