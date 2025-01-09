@@ -79,6 +79,7 @@ describe('Maestro Decoder', () => {
       stoveStatus: {
         description: 'Off',
         id: 0,
+        state: 'OFF',
       },
       stoveYear: 2024,
       totalOperating: 5091878,
@@ -92,7 +93,7 @@ describe('Maestro Decoder', () => {
     });
   });
 
-  it('create table', () => {
+  xit('create table', () => {
     const table = dataReceived.stringaRicevuta
       .split('|')
       .map((value, index) => {

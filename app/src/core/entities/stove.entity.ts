@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { PowerOperating } from './stove-state.entity';
 
 interface PowerConsumption {
@@ -13,9 +14,19 @@ export class StoveEntity {
   id: string;
   macAddress: string;
 
-  powerRPMSpeed: Map<number, PowerConsumption> = new Map();
-  calibrationRPM: number;
-  calibrationConsumption: number;
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: {
+      type: 'object',
+      properties: {
+        rpmSpeed: { type: 'number' },
+        consumption: { type: 'number' },
+      },
+    },
+  })
+  private powerRPMSpeed: Map<number, PowerConsumption> = new Map();
+  private calibrationRPM: number;
+  private calibrationConsumption: number;
 
   constructor(
     id: string,

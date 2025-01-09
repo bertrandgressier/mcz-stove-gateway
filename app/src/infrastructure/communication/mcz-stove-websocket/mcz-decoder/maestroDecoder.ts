@@ -6,6 +6,7 @@ import {
   MaestroType,
   MessageType,
   stoveStates,
+  StoveStateStatus,
 } from './mcz-stove.model';
 
 export const valueDecoder = (value: string, type: MaestroType) => {
@@ -21,7 +22,13 @@ export const valueDecoder = (value: string, type: MaestroType) => {
       const stoveStateResult = stoveStates.find(
         (stoveState) => stoveState.id === stoveStateId,
       );
-      return stoveStateResult ?? { id: stoveStateId, description: 'Unknown' };
+      return (
+        stoveStateResult ?? {
+          id: stoveStateId,
+          description: 'Unknown',
+          state: StoveStateStatus.IDLE,
+        }
+      );
     case MaestroType.boolean:
       return value === '01';
   }

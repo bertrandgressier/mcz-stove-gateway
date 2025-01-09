@@ -1,7 +1,14 @@
+export enum StoveStatusDto {
+  OFF = 'OFF',
+  IDLE = 'IDLE',
+  ON = 'ON',
+  ERROR = 'ERROR',
+}
+
 export class StoveStateDto {
   statusId: number;
   statusDescription: string;
-  activated: boolean;
+  activated: StoveStatusDto;
   activeTemperature: number;
   autoMode: boolean;
   ecoStop: boolean;

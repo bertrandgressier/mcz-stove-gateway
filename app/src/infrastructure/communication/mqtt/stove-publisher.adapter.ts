@@ -37,14 +37,19 @@ export class StovePublisherAdapter implements StovePublisherPort {
     //publish binary sensor config
     binarySensors.forEach((sensor) => {
       const name_camel_case = sensor.name.replace(/ /g, '_').toLowerCase();
-      const sensorConfig = setupBinarySensorConfig(
-        stoveId,
-        sensor.name,
-        sensor.valueTemplate,
-      );
-      const topic = `homeassistant/binary_sensor/mcz_${stoveId}/${name_camel_case}/config`;
 
-      this.mqttService.publishMessage(topic, sensorConfig, true);
+      const topic = `homeassistant/binary_sensor/mcz_${stoveId}/${name_camel_case}/config`;
+      if (sensor.removed) {
+        this.mqttService.publishMessage(topic, '', true);
+        return;
+      } else {
+        const sensorConfig = setupBinarySensorConfig(
+          stoveId,
+          sensor.name,
+          sensor.valueTemplate,
+        );
+        this.mqttService.publishMessage(topic, sensorConfig, true);
+      }
     });
 
     //publish climate config

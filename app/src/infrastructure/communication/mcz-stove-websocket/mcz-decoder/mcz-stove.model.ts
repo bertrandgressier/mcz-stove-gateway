@@ -8,11 +8,17 @@ export enum MessageType {
   DATA = '01',
 }
 
+export enum StoveStateStatus {
+  OFF = 'OFF',
+  IDLE = 'IDLE',
+  ON = 'ON',
+  ERROR = 'ERROR',
+}
+
 export interface MczStoveState {
   id: number;
   description: string;
-  on?: boolean;
-  error?: boolean;
+  state: StoveStateStatus;
 }
 
 export interface MczFanState {
@@ -34,53 +40,129 @@ export const fanStates: MczFanState[] = [
 ];
 
 export const stoveStates: MczStoveState[] = [
-  { id: -1, description: 'Unknown' },
-  { id: 0, description: 'Off' },
-  { id: 1, description: 'Checking hot or cold', on: true },
-  { id: 2, description: 'Cleaning cold', on: true },
-  { id: 3, description: 'Loading Pellets Cold', on: true },
-  { id: 4, description: 'Start 1 Cold', on: true },
-  { id: 5, description: 'Start 2 Cold', on: true },
-  { id: 6, description: 'Cleaning Hot', on: true },
-  { id: 7, description: 'Loading Pellets Hot', on: true },
-  { id: 8, description: 'Start 1 Hot', on: true },
-  { id: 9, description: 'Start 2 Hot', on: true },
-  { id: 10, description: 'Stabilising', on: true },
-  { id: 11, description: 'Power 1', on: true },
-  { id: 12, description: 'Power 2', on: true },
-  { id: 13, description: 'Power 3', on: true },
-  { id: 14, description: 'Power 4', on: true },
-  { id: 15, description: 'Power 5', on: true },
-  { id: 30, description: 'Diagnostics' },
-  { id: 31, description: 'On', on: true },
-  { id: 40, description: 'Shutdown', on: false },
-  { id: 41, description: 'Cooling', on: false },
-  { id: 42, description: 'Cleaning Low', on: false },
-  { id: 43, description: 'Cleaning High', on: false },
-  { id: 44, description: 'UNLOCKING SCREW' },
-  { id: 45, description: 'Auto Eco' },
-  { id: 46, description: 'Standby' },
-  { id: 48, description: 'Diagnostics' },
-  { id: 49, description: 'Loading Auger' },
-  { id: 50, description: 'Error A01 - Ignition failed' },
-  { id: 51, description: 'Error A02 - No flame' },
-  { id: 52, description: 'Error A03 - Tank overheating' },
-  { id: 53, description: 'Error A04 - Flue gas temperature too high' },
-  { id: 54, description: 'Error A05 - Duct obstruction - Wind' },
-  { id: 55, description: 'Error A06 - Bad printing' },
-  { id: 56, description: 'Error A09 - SMOKE PROBE' },
-  { id: 57, description: 'Error A11 - GEAR MOTOR' },
-  { id: 58, description: 'Error A13 - MOTHERBOARD TEMPERATURE' },
-  { id: 59, description: 'Error A14 - DEFECT ACTIVE' },
-  { id: 60, description: 'Error A18 - WATER TEMP ALARM' },
-  { id: 61, description: 'Error A19 - FAULTY WATER PROBE' },
-  { id: 62, description: 'Error A20 - FAILURE OF AUXILIARY PROBE' },
-  { id: 63, description: 'Error A21 - PRESSURE SWITCH ALARM' },
-  { id: 64, description: 'Error A22 - ROOM PROBE FAULT' },
-  { id: 65, description: 'Error A23 - BRAZIL CLOSING FAULT' },
-  { id: 66, description: 'Error A12 - MOTOR REDUCER CONTROLLER FAILURE' },
-  { id: 67, description: 'Error A17 - ENDLESS SCREW JAM' },
-  { id: 69, description: 'WAITING FOR SECURITY ALARMS' },
+  { id: -1, description: 'Unknown', state: StoveStateStatus.ERROR },
+  { id: 0, description: 'Off', state: StoveStateStatus.OFF },
+  { id: 1, description: 'Checking hot or cold', state: StoveStateStatus.ON },
+  { id: 2, description: 'Cleaning cold', state: StoveStateStatus.ON },
+  { id: 3, description: 'Loading Pellets Cold', state: StoveStateStatus.ON },
+  { id: 4, description: 'Start 1 Cold', state: StoveStateStatus.ON },
+  { id: 5, description: 'Start 2 Cold', state: StoveStateStatus.ON },
+  { id: 6, description: 'Cleaning Hot', state: StoveStateStatus.ON },
+  { id: 7, description: 'Loading Pellets Hot', state: StoveStateStatus.ON },
+  { id: 8, description: 'Start 1 Hot', state: StoveStateStatus.ON },
+  { id: 9, description: 'Start 2 Hot', state: StoveStateStatus.ON },
+  { id: 10, description: 'Stabilizing', state: StoveStateStatus.ON },
+  { id: 11, description: 'Power 1', state: StoveStateStatus.ON },
+  { id: 12, description: 'Power 2', state: StoveStateStatus.ON },
+  { id: 13, description: 'Power 3', state: StoveStateStatus.ON },
+  { id: 14, description: 'Power 4', state: StoveStateStatus.ON },
+  { id: 15, description: 'Power 5', state: StoveStateStatus.ON },
+  { id: 30, description: 'Diagnostics', state: StoveStateStatus.ON },
+  { id: 31, description: 'On', state: StoveStateStatus.ON },
+  { id: 40, description: 'Shutdown', state: StoveStateStatus.IDLE },
+  { id: 41, description: 'Cooling', state: StoveStateStatus.IDLE },
+  { id: 42, description: 'Cleaning Low', state: StoveStateStatus.IDLE },
+  { id: 43, description: 'Cleaning High', state: StoveStateStatus.IDLE },
+  { id: 44, description: 'UNLOCKING SCREW', state: StoveStateStatus.IDLE },
+  { id: 45, description: 'Auto Eco', state: StoveStateStatus.IDLE },
+  { id: 46, description: 'Standby', state: StoveStateStatus.IDLE },
+  { id: 48, description: 'Diagnostics', state: StoveStateStatus.IDLE },
+  { id: 49, description: 'Loading Auger', state: StoveStateStatus.IDLE },
+  {
+    id: 50,
+    description: 'Error A01 - Ignition failed',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 51,
+    description: 'Error A02 - No flame',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 52,
+    description: 'Error A03 - Tank overheating',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 53,
+    description: 'Error A04 - Flue gas temperature too high',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 54,
+    description: 'Error A05 - Duct obstruction - Wind',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 55,
+    description: 'Error A06 - Bad printing',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 56,
+    description: 'Error A09 - SMOKE PROBE',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 57,
+    description: 'Error A11 - GEAR MOTOR',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 58,
+    description: 'Error A13 - MOTHERBOARD TEMPERATURE',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 59,
+    description: 'Error A14 - DEFECT ACTIVE',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 60,
+    description: 'Error A18 - WATER TEMP ALARM',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 61,
+    description: 'Error A19 - FAULTY WATER PROBE',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 62,
+    description: 'Error A20 - FAILURE OF AUXILIARY PROBE',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 63,
+    description: 'Error A21 - PRESSURE SWITCH ALARM',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 64,
+    description: 'Error A22 - ROOM PROBE FAULT',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 65,
+    description: 'Error A23 - BRAZIL CLOSING FAULT',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 66,
+    description: 'Error A12 - MOTOR REDUCER CONTROLLER FAILURE',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 67,
+    description: 'Error A17 - ENDLESS SCREW JAM',
+    state: StoveStateStatus.ERROR,
+  },
+  {
+    id: 69,
+    description: 'WAITING FOR SECURITY ALARMS',
+    state: StoveStateStatus.ERROR,
+  },
 ];
 
 export enum MaestroType {

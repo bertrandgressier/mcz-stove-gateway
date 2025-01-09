@@ -31,6 +31,7 @@ interface SensorBinaryConfig {
 interface HABinarySensor {
   name: string;
   valueTemplate: string;
+  removed?: boolean;
 }
 
 type deviceClass = 'temperature' | 'speed' | 'durationSecond' | 'durationHour';
@@ -105,6 +106,12 @@ export const sensors: HASensor[] = [
     deviceClass: null,
     icon: 'mdi:fireplace',
   },
+  {
+    name: 'Activated',
+    valueTemplate: 'activated',
+    deviceClass: null,
+    icon: 'mdi:string',
+  },
 ];
 
 export const binarySensors: HABinarySensor[] = [
@@ -131,6 +138,7 @@ export const binarySensors: HABinarySensor[] = [
   {
     name: 'Activated',
     valueTemplate: 'activated',
+    removed: true,
   },
 ];
 
@@ -147,6 +155,8 @@ export const setupClimateConfig = (stoveId: string) => {
     unique_id,
     availability_topic: `MczStove/${stoveId}/connected`,
     modes: ['off', 'heat'],
+    action_topic: `MczStove/${stoveId}/stoveData`,
+    action_template: '{{ value_json.action }}',
     mode_state_topic: `MczStove/${stoveId}/stoveData`,
     mode_state_template: '{{ value_json.mode_state}}',
     current_temperature_topic: `MczStove/${stoveId}/stoveData`,

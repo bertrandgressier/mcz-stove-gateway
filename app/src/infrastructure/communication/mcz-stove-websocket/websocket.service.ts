@@ -5,11 +5,16 @@ import {
   FanMode,
   StovePower,
   StoveState,
+  StoveStatus,
 } from '../../../core/entities/stove-state.entity';
 import { GetStovesUseCase } from '../../../core/use-cases/get-stoves.use-case';
 import { StoveConnectionStatusUseCase } from '../../../core/use-cases/stove-connection-status.use-case';
 import { UpdateStoveStateUseCase } from '../../../core/use-cases/update-stove-state.use-case';
-import { MaestroObject, MczFanState } from './mcz-decoder/mcz-stove.model';
+import {
+  MaestroObject,
+  MczFanState,
+  StoveStateStatus,
+} from './mcz-decoder/mcz-stove.model';
 import { MCZCommand, MczStoveWebsocket } from './mczStoveWebsocket';
 
 @Injectable()
@@ -106,11 +111,26 @@ export class WebsocketService implements OnApplicationBootstrap {
     }
   }
 
+  private statusMapper(status: StoveStateStatus): StoveStatus {
+    switch (status) {
+      case StoveStateStatus.ERROR:
+        return StoveStatus.ERROR;
+      case StoveStateStatus.OFF:
+        return StoveStatus.OFF;
+      case StoveStateStatus.ON:
+        return StoveStatus.ON;
+      case StoveStateStatus.IDLE:
+        return StoveStatus.IDLE;
+      default:
+        return StoveStatus.ERROR;
+    }
+  }
+
   private stoveEntityMapper(data: MaestroObject): StoveState {
     return {
       statusId: data.stoveStatus.id,
       statusDescription: data.stoveStatus.description,
-      activated: data.stoveStatus.on ?? false,
+      activated: this.statusMapper(data.stoveStatus.state),
       activeTemperature: data.activeLive,
       autoMode: data.chronometerThermostatMode ?? false,
       ecoStop: data.ecoMode ?? false,
