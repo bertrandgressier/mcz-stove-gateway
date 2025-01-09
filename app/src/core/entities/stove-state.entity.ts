@@ -26,6 +26,13 @@ export class PowerOperating {
   power5Operating: number;
 }
 
+export enum StoveStatus {
+  OFF,
+  IDLE,
+  ON,
+  ERROR,
+}
+
 export class StoveState {
   statusId: number;
   statusDescription: string;
@@ -33,7 +40,7 @@ export class StoveState {
   fanMode: number;
   regulationMode: boolean;
   activeMode: boolean;
-  activated: boolean;
+  activated: StoveStatus;
   ambientTemperature: number;
   targetTemperature: number;
   smokesTemperature: number; // fumeTemperature

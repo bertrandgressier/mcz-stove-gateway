@@ -147,6 +147,8 @@ export const setupClimateConfig = (stoveId: string) => {
     unique_id,
     availability_topic: `MczStove/${stoveId}/connected`,
     modes: ['off', 'heat'],
+    action_topic: `MczStove/${stoveId}/stoveData`,
+    action_template: '{{ value_json.action }}',
     mode_state_topic: `MczStove/${stoveId}/stoveData`,
     mode_state_template: '{{ value_json.mode_state}}',
     current_temperature_topic: `MczStove/${stoveId}/stoveData`,
