@@ -74,7 +74,7 @@ jobs:
         run: cp app/package-lock.json hassio-mcz-maestro-dev/app
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3.3.0
+        uses: docker/login-action@v3.4.0
         if: steps.check.outputs.build_arch == 'true'
         with:
           registry: ghcr.io
