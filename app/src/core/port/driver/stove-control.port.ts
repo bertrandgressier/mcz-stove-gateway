@@ -5,4 +5,5 @@ export abstract class StoveControlPort {
     stoveId: string,
     temperature: number,
   ): Promise<void>;
+  abstract setEcoStopMode(stoveId: string, enabled: boolean): Promise<void>;
 }

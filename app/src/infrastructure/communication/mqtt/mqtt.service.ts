@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MqttConfig } from '../../../config/configSchema';
+import { SetEcoStopModeUseCase } from '../../../core/use-cases/set-eco-stop-mode.use-case';
 import { SetTargetTemperatureUseCase } from '../../../core/use-cases/set-target-temperature.use-case';
 import { TurnOffStoveUseCase } from '../../../core/use-cases/turn-off-stove.use-case';
 import { TurnOnStoveUseCase } from '../../../core/use-cases/turn-on-stove.use-case';
@@ -22,6 +23,7 @@ export class MqttService implements OnApplicationBootstrap, OnModuleInit {
     private readonly turnOnStoveUseCase: TurnOnStoveUseCase,
     private readonly turnOffStoveUseCase: TurnOffStoveUseCase,
     private readonly setTargetTemperatureUseCase: SetTargetTemperatureUseCase,
+    private readonly setEcoStopModeUseCase: SetEcoStopModeUseCase,
   ) {
     this.config = this.configService.get<MqttConfig>('app.mqtt');
   }
@@ -44,6 +46,7 @@ export class MqttService implements OnApplicationBootstrap, OnModuleInit {
   private subscribeToCommands() {
     const powerCommandTopic = `${this.config.mqttTopicPath}/+/command/power`;
     const tempCommandTopic = `${this.config.mqttTopicPath}/+/command/target_temperature`;
+    const ecoStopCommandTopic = `${this.config.mqttTopicPath}/+/command/eco_stop`;
 
     this.logger.log(
       `Subscribing to MQTT power command topic: ${powerCommandTopic}`,
@@ -55,10 +58,18 @@ export class MqttService implements OnApplicationBootstrap, OnModuleInit {
     );
     this.mqtt.subscribe(tempCommandTopic);
 
+    this.logger.log(
+      `Subscribing to MQTT Eco Stop command topic: ${ecoStopCommandTopic}`,
+    );
+    this.mqtt.subscribe(ecoStopCommandTopic);
+
     this.mqtt.onMessage().subscribe(({ topic, message }) => {
       // Use regex to match topics and extract stoveId
       const powerMatch = topic.match(powerCommandTopic.replace('+', '([^/]+)'));
       const tempMatch = topic.match(tempCommandTopic.replace('+', '([^/]+)'));
+      const ecoStopMatch = topic.match(
+        ecoStopCommandTopic.replace('+', '([^/]+)'),
+      );
 
       if (powerMatch) {
         const stoveId = powerMatch[1];
@@ -66,14 +77,15 @@ export class MqttService implements OnApplicationBootstrap, OnModuleInit {
       } else if (tempMatch) {
         const stoveId = tempMatch[1];
         this.handleTemperatureCommand(stoveId, message);
+      } else if (ecoStopMatch) {
+        const stoveId = ecoStopMatch[1];
+        this.handleEcoStopCommand(stoveId, message);
       }
     });
   }
 
   private async handlePowerCommand(stoveId: string, message: Buffer) {
-    // stoveId is now passed directly
     const command = message.toString().toUpperCase();
-
     this.logger.log(`Received power command for stove ${stoveId}: ${command}`);
 
     try {
@@ -119,6 +131,37 @@ export class MqttService implements OnApplicationBootstrap, OnModuleInit {
     } catch (error) {
       this.logger.error(
         `Error executing set target temperature command for stove ${stoveId}: ${temperatureString}`,
+        error,
+      );
+    }
+  }
+
+  private async handleEcoStopCommand(stoveId: string, message: Buffer) {
+    const command = message.toString().toUpperCase();
+    this.logger.log(
+      `Received Eco Stop command for stove ${stoveId}: ${command}`,
+    );
+
+    let enabled: boolean;
+    if (command === 'ON') {
+      enabled = true;
+    } else if (command === 'OFF') {
+      enabled = false;
+    } else {
+      this.logger.warn(
+        `Received unknown Eco Stop command for stove ${stoveId}: ${command}`,
+      );
+      return;
+    }
+
+    try {
+      await this.setEcoStopModeUseCase.execute(stoveId, enabled);
+      this.logger.log(
+        `Set Eco Stop mode use case executed for stove ${stoveId}`,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Error executing set Eco Stop mode command for stove ${stoveId}: ${command}`,
         error,
       );
     }

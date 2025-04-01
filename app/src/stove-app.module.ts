@@ -8,6 +8,7 @@ import { StoveRepositoryPort } from './core/port/driver/stove-repository.port';
 import { GetStovesUseCase } from './core/use-cases/get-stoves.use-case';
 import { HomeAssistantUseCase } from './core/use-cases/home-assistant.use-case';
 import { StoveConnectionStatusUseCase } from './core/use-cases/stove-connection-status.use-case';
+import { SetEcoStopModeUseCase } from './core/use-cases/set-eco-stop-mode.use-case';
 import { SetTargetTemperatureUseCase } from './core/use-cases/set-target-temperature.use-case';
 import { TurnOffStoveUseCase } from './core/use-cases/turn-off-stove.use-case';
 import { TurnOnStoveUseCase } from './core/use-cases/turn-on-stove.use-case';
@@ -55,6 +56,7 @@ import { StoveRepository } from './infrastructure/persistence/stove.repository';
     TurnOnStoveUseCase,
     TurnOffStoveUseCase,
     SetTargetTemperatureUseCase,
+    SetEcoStopModeUseCase,
   ],
 })
 export class StoveAppModule implements OnApplicationBootstrap {

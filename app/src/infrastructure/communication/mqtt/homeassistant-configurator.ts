@@ -26,6 +26,31 @@ interface SensorBinaryConfig {
   state_topic: string;
   availability_topic: string;
   value_template: string;
+  payload_on?: string;
+  payload_off?: string;
+  state_on?: string;
+  state_off?: string;
+}
+
+interface SwitchConfig {
+  device: {
+    identifiers: string[];
+    name: string;
+    manufacturer: string;
+  };
+  name: string;
+  unique_id: string;
+  state_topic: string;
+  command_topic: string;
+  availability_topic: string;
+  payload_on: string;
+  payload_off: string;
+  state_on: string;
+  state_off: string;
+  value_template?: string; // Added for extracting state from JSON (though not used by standard MQTT switch)
+  optimistic?: boolean; // Consider adding if state updates are slow/unreliable
+  retain?: boolean; // Usually false for commands
+  icon?: string;
 }
 
 interface HABinarySensor {
@@ -117,7 +142,7 @@ export const sensors: HASensor[] = [
 export const binarySensors: HABinarySensor[] = [
   {
     name: 'Eco Stop',
-    valueTemplate: 'ecoStop',
+    valueTemplate: 'ecoStop', // This will be used for the state of the switch
   },
   {
     name: 'Auto Mode',
@@ -171,6 +196,7 @@ export const setupClimateConfig = (stoveId: string) => {
     min_temp: 15,
     max_temp: 25,
     temperature_command_topic: `MczStove/${stoveId}/command/target_temperature`,
+    optimistic: true, // Assume commands work immediately for better UX
   };
 };
 
@@ -248,4 +274,35 @@ export const setupSensorConfig = (
       icon,
     };
   }
+};
+
+export const setupSwitchConfig = (
+  stoveId: string,
+  name: string,
+  stateValueTemplate: string, // Path to the boolean value in stoveData JSON
+  commandSubTopic: string, // e.g., 'eco_stop'
+  icon?: string,
+): SwitchConfig => {
+  const unique_id = `mcz_${stoveId}_${name.replace(/\s+/g, '_').toLowerCase()}`;
+  const baseTopic = `MczStove/${stoveId}`;
+
+  return {
+    device: {
+      identifiers: [`mcz_${stoveId}`],
+      name: 'MCZ Stove',
+      manufacturer: 'MCZ',
+    },
+    name: name,
+    unique_id,
+    state_topic: `${baseTopic}/stoveData`, // State comes from the main data topic
+    command_topic: `${baseTopic}/command/${commandSubTopic}`,
+    availability_topic: `${baseTopic}/connected`,
+    payload_on: 'ON',
+    payload_off: 'OFF',
+    state_on: 'true', // HA will compare the output of value_template to these
+    state_off: 'false',
+    value_template: `{{ value_json.${stateValueTemplate} | lower }}`, // Extract boolean, convert to lowercase string 'true'/'false'
+    optimistic: true, // Assume command works immediately for better UX
+    icon: icon || 'mdi:leaf-eco', // Default icon for Eco mode
+  };
 };

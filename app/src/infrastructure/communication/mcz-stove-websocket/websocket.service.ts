@@ -57,7 +57,8 @@ export class WebsocketService implements OnApplicationBootstrap {
       const randomSecond = Math.floor(Math.random() * 60);
       this.schedulerRegistry.addCronJob(
         stove.id,
-        new CronJob(`${randomSecond} * * * * *`, () => {
+        // Run every 30 seconds at a random offset
+        new CronJob(`${randomSecond}/30 * * * * *`, () => {
           this.mczStoveWebsocket.sendRequest(stove.id, 1, MCZCommand.GetInfo);
         }),
       );
