@@ -159,6 +159,8 @@ export const setupClimateConfig = (stoveId: string) => {
     action_template: '{{ value_json.action }}',
     mode_state_topic: `MczStove/${stoveId}/stoveData`,
     mode_state_template: '{{ value_json.mode_state}}',
+    mode_command_topic: `MczStove/${stoveId}/command/power`,
+    mode_command_template: `{% if value == 'heat' %}ON{% elif value == 'off' %}OFF{% endif %}`,
     current_temperature_topic: `MczStove/${stoveId}/stoveData`,
     current_temperature_template: '{{ value_json.ambientTemperature }}',
     temperature_state_topic: `MczStove/${stoveId}/stoveData`,

@@ -15,6 +15,10 @@ enum MczWsEvents {
   Join = 'join',
   Command = 'chiedo',
 }
+// Constants for specific commands
+const POWER_COMMAND_ID = 34;
+const POWER_ON_VALUE = 1;
+const POWER_OFF_VALUE = 40;
 
 export enum MCZCommand {
   GetInfo = 'C|RecuperoInfo',
@@ -153,6 +157,43 @@ export class MczStoveWebsocket {
       macAddress: stove.macAddress,
       tipoChiamata: callType,
       richiesta: request,
+    });
+  }
+  /**
+   * Sends a command with a specific ID and value to the stove.
+   * Used for commands that require setting a specific parameter value.
+   * @param stoveId The serial number of the stove.
+   * @param commandId The numeric ID of the command (e.g., 34 for power).
+   * @param value The value to set for the command (e.g., 1 for ON, 40 for OFF).
+   */
+  sendCommandWithValue(
+    stoveId: string,
+    commandId: number,
+    value: number | string,
+  ): void {
+    const stove = this.stoves.get(stoveId);
+    if (!stove) {
+      this.logger.warn(
+        `[${stoveId}] Stove not found, cannot send command ${commandId}`,
+      );
+      return;
+    }
+
+    this.logger.log(
+      `[${stoveId}] Sending command ID ${commandId} with value ${value}`,
+    );
+
+    // Construct the command string based on Python reference implementations
+    // Format: C|WriteParametri|{commandId}|{value}
+    const commandString = `C|WriteParametri|${commandId}|${value}`;
+
+    // Emit the 'chiedo' event with a JSON payload containing the command string
+    // based on the second Python script example. tipoChiamata is set to 1.
+    stove.socket.emit(MczWsEvents.Command, {
+      serialNumber: stove.stoveId,
+      macAddress: stove.macAddress,
+      tipoChiamata: 1, // Using 1 based on the second Python script's send function
+      richiesta: commandString,
     });
   }
 }

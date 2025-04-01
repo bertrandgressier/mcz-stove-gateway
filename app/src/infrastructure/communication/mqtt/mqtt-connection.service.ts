@@ -9,7 +9,11 @@ export class MqttConnectionService {
   private client: MqttClient;
   private logger = new Logger(MqttConnectionService.name);
 
-  private mqttConnected = new Subject<boolean>();
+  private readonly mqttConnected = new Subject<boolean>();
+  private readonly receivedMessages = new Subject<{
+    topic: string;
+    message: Buffer;
+  }>();
   private mqttTopicPath: string = 'websocket';
 
   connect(mqttConfig: MqttConfig) {
@@ -25,7 +29,13 @@ export class MqttConnectionService {
     });
 
     this.client.on('connect', () => {
+      this.logger.log('MQTT client connected');
       this.mqttConnected.next(true);
+      // Setup message listener upon connection
+      this.client.on('message', (topic, message) => {
+        this.logger.debug(`Received message on topic ${topic}`);
+        this.receivedMessages.next({ topic, message });
+      });
     });
 
     this.client.on('error', (err) => {
@@ -34,6 +44,22 @@ export class MqttConnectionService {
 
     this.client.on('close', () => {
       this.mqttConnected.next(false);
+    });
+  }
+
+  subscribe(topic: string) {
+    if (!this.client || !this.client.connected) {
+      this.logger.warn(
+        `MQTT client not connected, cannot subscribe to ${topic}`,
+      );
+      return;
+    }
+    this.client.subscribe(topic, (err) => {
+      if (err) {
+        this.logger.error(`Error subscribing to topic ${topic}: ${err}`);
+      } else {
+        this.logger.log(`Successfully subscribed to topic: ${topic}`);
+      }
     });
   }
 
@@ -59,5 +85,9 @@ export class MqttConnectionService {
 
   onConnected() {
     return this.mqttConnected;
+  }
+
+  onMessage() {
+    return this.receivedMessages;
   }
 }
