@@ -1,5 +1,13 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 1.4.0
+
+- Add ability to control stove power (ON/OFF) via climate entity.
+- Add ability to control target temperature via climate entity.
+- Add ability to control Eco Stop mode via a new switch entity.
+- Improve state reporting reactivity in Home Assistant (optimistic mode, faster refresh).
+- Correct mapping of IDLE state for climate entity.
+
 ## 1.3.0
 
 [Full change log 1.3.0](https://github.com/bertrandgressier/mcz-stove-gateway/releases/tag/1.3.0)

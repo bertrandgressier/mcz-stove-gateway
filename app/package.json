@@ -1,6 +1,6 @@
 {
   "name": "mcz-stove-ha-integration",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "MCZ Stove Integration with MQTT in Home Assistant",
   "author": "Bertrand Gressier",
   "license": "MIT",
