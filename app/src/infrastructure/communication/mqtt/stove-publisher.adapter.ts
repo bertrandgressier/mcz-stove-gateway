@@ -7,6 +7,7 @@ import {
   setupBinarySensorConfig,
   setupClimateConfig,
   setupSensorConfig,
+  setupSwitchConfig,
 } from './homeassistant-configurator';
 import { MqttConnectionService } from './mqtt-connection.service';
 import { stoveMqttRecordMapper } from './stove-mqtt.dto';
@@ -56,6 +57,18 @@ export class StovePublisherAdapter implements StovePublisherPort {
     const climateConfig = setupClimateConfig(stoveId);
     const climateTopic = `homeassistant/climate/mcz_${stoveId}/config`;
     this.mqttService.publishMessage(climateTopic, climateConfig, true);
+
+    // Publish Eco Stop switch config
+    // Assuming the state is available in stoveData as a boolean 'ecoStop'
+    const ecoStopSwitchConfig = setupSwitchConfig(
+      stoveId,
+      'Eco Stop',
+      'ecoStop', // Path to the state value in the JSON published to stoveData topic
+      'eco_stop', // Sub-topic for the command
+      'mdi:leaf-eco',
+    );
+    const ecoStopTopic = `homeassistant/switch/mcz_${stoveId}/eco_stop/config`;
+    this.mqttService.publishMessage(ecoStopTopic, ecoStopSwitchConfig, true);
   }
 
   connected(stoveId: string, connected: boolean): void {

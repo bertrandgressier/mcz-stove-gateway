@@ -24,7 +24,7 @@ export const modeStateMapper = (stoveData: StoveState) => {
     case StoveStatus.ON:
       return 'heat';
     case StoveStatus.IDLE:
-      return 'heat';
+      return 'off'; // Map IDLE state to 'off' for Home Assistant climate entity
     default:
       return 'off';
   }
