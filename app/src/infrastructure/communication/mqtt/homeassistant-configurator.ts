@@ -170,6 +170,7 @@ export const setupClimateConfig = (stoveId: string) => {
     precision: 0.5,
     min_temp: 15,
     max_temp: 25,
+    temperature_command_topic: `MczStove/${stoveId}/command/target_temperature`,
   };
 };
 
