@@ -28,8 +28,8 @@ _It's still in development._
 
 - [ ] Add missing attributes from the stove
 - [ ] Add Fan information
-- [ ] Control the stove from HA : turn on/off
-- [ ] Control the stove from HA : Change the target temperature
+- [x] Control the stove from HA : turn on/off
+- [x] Control the stove from HA : Change the target temperature
 - [ ] Control the stove from HA : Fan control
 - [ ] Compute the consumption of pellets
 - [ ] Use MQTT configuration from HA
